@@ -5,8 +5,19 @@
     <!-- Comment<router-link to="/about">About</router-link> -->
     <!-- <router-link to="/about">About</router-link>  -->
   </div>
-  <router-view/>
 </template>
+
+<script>
+// @ is an alias to /src
+import TestQuestions from './components/TestQuestions.vue'
+export default {
+  name: 'App',
+  components: {
+    TestQuestions
+    
+  }
+}
+</script>
 
 <style>
 #app {
