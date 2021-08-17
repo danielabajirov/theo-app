@@ -1,3 +1,4 @@
+
 <template>
     <div class="container-app">
 
@@ -15,9 +16,15 @@
               </div>
               <div class="box-propositions">
                 <ul>
-                  <li v-for="(proposition,index) in question.propositions" :key="index" class="li" @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">{{proposition.props}} <div class="fas fa-check" v-if="correct ?  proposition.correct: ''"></div><div class="fas fa-times" v-if="correct ?  !proposition.correct: ''"></div></li>
+                  <li v-for="(proposition,index) in question.propositions" :key="index" class="li" @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">
+                    <math-field id="testing"  style="font-size: 13px;" read-only=false v-bind:value="proposition.props"  @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">     
+                      </math-field>
+                    <div class="fas fa-check" v-if="correct ?  proposition.correct: ''"></div>
+                    <div class="fas fa-times" v-if="correct ?  !proposition.correct: ''"></div>
+                    </li>
                   
                 </ul>
+               
               </div>
               
               
@@ -41,22 +48,23 @@
                   
                   
           </div>
-          
-          
-            
+              
         </div>
   </div>
 </template>
 
 
 <script>
+/* eslint-disable */
 import db from '@/firebase'
+import {MathLive} from "mathlive";
+// import "mathlive/dist/mathlive.core.css";
+// import "mathlive/dist/mathlive.css";
+
 export default {
   data(){
     return{
-      questions:[
-        
-      ],
+      questions:[],
       a:0,
       b:1,
       next:true,
@@ -65,16 +73,55 @@ export default {
       score:0,
       correct:false,
       progress:0,
-      
+      test:"\text{\{M | M ist Kodierung einer Turingmaschine,}  \text{die auf endlich vielen Eingaben terminiert\} ist eine entscheidbare Menge. \}",
+      questionsTest:[
+        {
+          question:"Inside which HTML element do we put the JavaScript ?",
+          propositions:[
+            {props:"x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}",correct:true},
+            {props:"x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}"},
+            {props:"x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}"},
+            {props:"\\text{\\{M | M ist Kodierung einer Turingmaschine,} \\text{die auf endlich vielen Eingaben terminiert\\} ist eine entscheidbare Menge. \\}  "}
+          ]
+        }
+      ]
     }
   },
   name: 'TestQuestions',
   components: {
-    //HelloWorld
+    //'vue-math': MathfieldElement
   },
   computed:{
       
   },
+  created() {
+    
+   
+
+  },
+  mounted()  {
+     let self = [];
+      db.ref("/questions").on("value", function(snapshot) {
+        let returnArr = [];
+        snapshot.forEach(function(childSnapshot) {
+          returnArr.push(childSnapshot.val());
+          // Fill the local data property with Firebase data
+          self = returnArr;
+        });
+      });
+      //this.shuffleArray(self);
+      this.questions = self;
+      console.log('Test'+this.questions)
+      
+      
+    
+
+  },
+  beforeUpdate() {
+     
+        
+      
+   },
   methods:{
     shuffleArray (arr) {
     var j, x, index;
@@ -86,6 +133,11 @@ export default {
     }
     return arr;
     },
+    renderMath() {
+      this.$nextTick(() => {
+        MathLive.renderMathInElement(this.$refs.testing);
+      });
+    },
     initializeDatabaseData(){
       let self = [];
       db.ref("/questions").on("value", function(snapshot) {
@@ -94,8 +146,7 @@ export default {
           returnArr.push(childSnapshot.val());
           // Fill the local data property with Firebase data
           self = returnArr;
-        });
-        return returnArr;
+        }); 
       });
       this.shuffleArray(self);
       this.questions = self;
@@ -130,7 +181,6 @@ export default {
         this.next = true;
         
       }
-      
     },
     skipQuestion(){
       if (!this.next) {
@@ -161,6 +211,10 @@ export default {
 </script>
 
 <style scoped>
+.math-field {
+ --hue: 10      
+}
+
 .container-app {
     display: flex;
     width: 100%;
@@ -220,7 +274,7 @@ export default {
 
 ul {
     display: flex;
-    width: 80%;
+    width: 90%;
     margin: 0;
     padding: 0;
     flex-flow: column;
@@ -228,7 +282,7 @@ ul {
 
 li {
     list-style: none;
-    line-height: 2;
+    line-height: 4;
     border: 1px solid #cdd2d2;
     margin-bottom: 20px;
     border-radius: 15px;
