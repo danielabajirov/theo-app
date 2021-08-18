@@ -16,6 +16,7 @@
               </div>
               <div class="box-propositions">
                 <ul>
+                  
                   <li v-for="(proposition,index) in question.propositions" :key="index" class="li" @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">
                     <math-field id="testing"  style="font-size: 13px;" read-only=false v-bind:value="proposition.props"  @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">     
                       </math-field>
@@ -109,19 +110,9 @@ export default {
           self = returnArr;
         });
       });
-      //this.shuffleArray(self);
       this.questions = self;
-      console.log('Test'+this.questions)
-      
-      
-    
 
   },
-  beforeUpdate() {
-     
-        
-      
-   },
   methods:{
     shuffleArray (arr) {
     var j, x, index;
