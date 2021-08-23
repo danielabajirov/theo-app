@@ -18,7 +18,7 @@
                 <ul>
                   
                   <li v-for="(proposition,index) in question.propositions" :key="index" class="li" @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">
-                    <math-field id="testing"  style="font-size: 13px;" read-only=false v-bind:value="proposition.props"  @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">     
+                    <math-field id="testing"  style="font-size: 13px;" read-only=false v-bind:value="proposition.props"  @pointerdown="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">     
                       </math-field>
                     <div class="fas fa-check" v-if="correct ?  proposition.correct: ''"></div>
                     <div class="fas fa-times" v-if="correct ?  !proposition.correct: ''"></div>
@@ -59,8 +59,6 @@
 /* eslint-disable */
 import db from '@/firebase'
 import {MathLive} from "mathlive";
-// import "mathlive/dist/mathlive.core.css";
-// import "mathlive/dist/mathlive.css";
 
 export default {
   data(){
@@ -74,43 +72,14 @@ export default {
       score:0,
       correct:false,
       progress:0,
-      test:"\text{\{M | M ist Kodierung einer Turingmaschine,}  \text{die auf endlich vielen Eingaben terminiert\} ist eine entscheidbare Menge. \}",
-      questionsTest:[
-        {
-          question:"Inside which HTML element do we put the JavaScript ?",
-          propositions:[
-            {props:"x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}",correct:true},
-            {props:"x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}"},
-            {props:"x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}"},
-            {props:"\\text{\\{M | M ist Kodierung einer Turingmaschine,} \\text{die auf endlich vielen Eingaben terminiert\\} ist eine entscheidbare Menge. \\}  "}
-          ]
-        }
-      ]
+      nextCount: 0
     }
   },
   name: 'TestQuestions',
   components: {
-    //'vue-math': MathfieldElement
-  },
-  computed:{
-      
-  },
-  created() {
-    
-   
-
   },
   mounted()  {
-     let self = [];
-      db.ref("/questions").on("value", function(snapshot) {
-        let returnArr = [];
-        snapshot.forEach(function(childSnapshot) {
-          returnArr.push(childSnapshot.val());
-          // Fill the local data property with Firebase data
-          self = returnArr;
-        });
-      });
-      this.questions = self;
+     this.initializeDatabaseData()
 
   },
   methods:{
@@ -146,7 +115,7 @@ export default {
       this.correct = true;
       this.next = false;
       if (e.correct) {
-        this.score++;
+        this.score = this.nextCount + 1;
       }
     },
     check(status){
@@ -157,6 +126,7 @@ export default {
         }
     },
     nextQuestion(){
+      this.nextCount = this.score;
       if (this.next) {
         return;
       }
