@@ -1,15 +1,16 @@
 import firebase from "firebase/app";
 import 'firebase/database'
 
-var firebaseConfig = {
-    apiKey: "AIzaSyAQiUemS5f0dwn-cau8rjE5hIn8wIA2AQg",
-    authDomain: "theo-learn.firebaseapp.com",
-    databaseURL: "https://theo-learn-default-rtdb.europe-west1.firebasedatabase.app/",
-    projectId: "theo-learn",
-    storageBucket: "theo-learn.appspot.com",
-    messagingSenderId: "299899111685",
-    appId: "1:299899111685:web:236d0c1747993190544f6c"
-  };
+const firebaseConfig = {
+    apiKey: "AIzaSyCh9xXPMyoTet6ducw7NrlC9jmSni0HP3k",
+    authDomain: "lc-cl-8679d.firebaseapp.com",
+    databaseURL: "https://lc-cl-8679d-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "lc-cl-8679d",
+    storageBucket: "lc-cl-8679d.appspot.com",
+    messagingSenderId: "958162256584",
+    appId: "1:958162256584:web:e7552add9784deeaf15bfd",
+    measurementId: "G-PKCV3QRYCN"
+};
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();

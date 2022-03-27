@@ -4,22 +4,29 @@
 
         <div class="container-quiz">
           <div class="header-quiz">
-            <h1>Theo Quiz Time</h1>
+            <h1>Quiz Time</h1>
             <img src="@/assets/biber-fmi.svg" width="80" height="70"/>
           </div>
           <div class="step-progress" :style="{'width':progress + '%'}"></div>
-          <div class="box" v-for="(question,index) in questions.slice(a,b)" :key="index" v-show="quiz">
+          <div class="box" v-for="(question,index) in questions.slice(a,b)" :key="index" v-show="quiz" >
               
               <div class="box-question">
+                <img
+                    max-height="50"
+                    max-width="100"
+                    :src="question.imageURL"
+                />
                 <h2>Question {{b}}/{{questions.length}}</h2>
                 <p>{{question.question}}</p>
+
               </div>
               <div class="box-propositions">
                 <ul>
                   
-                  <li v-for="(proposition,index) in question.propositions" :key="index" class="li" @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">
-                    <math-field id="testing"  style="font-size: 13px;" read-only=false v-bind:value="proposition.props"  @pointerdown="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">     
-                      </math-field>
+                  <li v-for="(proposition,index) in getValuesQuestions(question.props) " :key="index" class="li" @click="selectResponse(proposition,index, question.props)" :class=" correct ? check(proposition, question.props) : ''">
+
+                    <h2  @pointerdown="selectResponse(proposition,index, questions.props)" :class=" correct ? check(proposition) : ''">{{proposition}}</h2>
+
                     <div class="fas fa-check" v-if="correct ?  proposition.correct: ''"></div>
                     <div class="fas fa-times" v-if="correct ?  !proposition.correct: ''"></div>
                     </li>
@@ -64,6 +71,8 @@ export default {
   data(){
     return{
       questions:[],
+      storeVariable: "",
+      storeArray: [],
       a:0,
       b:1,
       next:true,
@@ -111,19 +120,54 @@ export default {
       this.shuffleArray(self);
       this.questions = self;
     },
-    selectResponse(e){
+    selectResponse(e, index, correctAnswer){
       this.correct = true;
       this.next = false;
-      if (e.correct) {
+      if (e == correctAnswer) {
         this.score = this.nextCount + 1;
       }
     },
-    check(status){
-        if (status.correct) {
+    check(status, correctAnswer){
+        if (status == correctAnswer) {
           return 'correct'
         }else{
           return 'incorrect' 
         }
+    },
+    getValuesQuestions(questionsArray) {
+      if(this.storeVariable == questionsArray){
+        return this.storeArray
+      }
+      var newArrayQuestions = []
+      this.questions.forEach(function (value, i) {
+        if (questionsArray !== value.props){
+          newArrayQuestions.push(value.props)
+        }
+
+      });
+      const shuffled = this.getRandom(newArrayQuestions, 3)
+      newArrayQuestions = shuffled
+      newArrayQuestions.push(questionsArray)
+      this.shuffleArray(newArrayQuestions)
+      this.storeArray = []
+      this.storeArray = newArrayQuestions
+      this.storeVariable = ""
+      this.storeVariable = questionsArray
+      return newArrayQuestions
+
+    },
+    getRandom(arr, n) {
+      var result = new Array(n),
+          len = arr.length,
+          taken = new Array(len);
+      if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+      while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+      }
+      return result;
     },
     nextQuestion(){
       this.nextCount = this.score;
@@ -211,7 +255,7 @@ export default {
 }
 
 .container-quiz .box {
-    display: flex;
+    display: table;
     width: 100%;
     height: 70%;
     flex-flow: column;
@@ -228,7 +272,7 @@ export default {
 
 .box-propositions {
     margin: auto;
-    display: flex;
+    display: table;
     width: 100%;
     justify-content: center;
 }
@@ -243,7 +287,7 @@ ul {
 
 li {
     list-style: none;
-    line-height: 4;
+    line-height: 1;
     border: 1px solid #cdd2d2;
     margin-bottom: 20px;
     border-radius: 15px;
