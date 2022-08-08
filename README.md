@@ -1,24 +1,6 @@
-# theo-learn
+# Theo-app
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Description
+This project implements a quiz app that can help prepare for the Theoretical Computer Science 2 exam. There are multiple choice quiz questions where only one answer is correct.
+![MainPage](./img/MainPage.png)
+The questions are presented in a relational database in latex notation.
