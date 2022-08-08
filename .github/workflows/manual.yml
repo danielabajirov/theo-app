@@ -30,3 +30,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
         BRANCH: gh-pages
         FOLDER: dist
+      env:
+        APIKEY: ${{ secrets.APIKEY }}
+        APPID: ${{ secrets.APPID }}
+        AUTHDOMAIN: ${{ secrets.AUTHDOMAIN }}
+        DATABASEURL: ${{ secrets.DATABASEURL }}
+        MEASUREMENTID: ${{ secrets.MEASUREMENTID }}
+        MESSAGINGSENDERID: ${{ secrets.MESSAGINGSENDERID }}
+        PROJECTID: ${{ secrets.PROJECTID }}
+        STORAGEBUCKET: ${{ secrets.STORAGEBUCKET }}
+        
+      
