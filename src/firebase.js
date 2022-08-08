@@ -5,6 +5,7 @@ import 'firebase/database'
 console.log("Test", process.env)
 console.log("Test", process.env.APIKEY)
 console.log("Test", process.env.DATABASEURL)
+console.log("Test", process.env.MEASUREMENTID)
 const firebaseConfig = {
   apiKey: process.env.APIKEY,
   authDomain: process.env.AUTHDOMAIN,
