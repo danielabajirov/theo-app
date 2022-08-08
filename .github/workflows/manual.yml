@@ -20,6 +20,7 @@ jobs:
         MESSAGINGSENDERID: ${{ secrets.VUE_APP_MESSAGINGSENDERID }}
         PROJECTID: ${{ secrets.VUE_APP_PROJECTID }}
         STORAGEBUCKET: ${{ secrets.VUE_APP_STORAGEBUCKET }}
+        TEST: ${{ secrets.THEO_APP_APIKEY }}
       run: |
         npm install
         npm run-script build

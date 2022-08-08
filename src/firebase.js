@@ -3,7 +3,7 @@ import 'firebase/database'
 
 // Your web app's Firebase configuration
 // Your web app's Firebase configuration
-console.log("Test", process.env)
+console.log("Test2", process.env)
 console.log("Test", process.env.APIKEY)
 console.log("Test", process.env.DATABASEURL)
 const firebaseConfig = {
