@@ -16,14 +16,13 @@ jobs:
         npm run build
       env:
         VUE_APP_APIKEY: ${{ secrets.VUE_APP_APIKEY }}
-        APPID: ${{ secrets.VUE_APP_APPID }}
-        AUTHDOMAIN: ${{ secrets.VUE_APP_AUTHDOMAIN }}
-        DATABASEURL: ${{ secrets.VUE_APP_DATABASEURL }}
-        MEASUREMENTID: ${{ secrets.VUE_APP_MEASUREMENTID }}
-        MESSAGINGSENDERID: ${{ secrets.VUE_APP_MESSAGINGSENDERID }}
-        PROJECTID: ${{ secrets.VUE_APP_PROJECTID }}
-        STORAGEBUCKET: ${{ secrets.VUE_APP_STORAGEBUCKET }}
-        THEO_APP_APIKEY: ${{ secrets.THEO_APP_APIKEY }}
+        VUE_APP_APPID: ${{ secrets.VUE_APP_APPID }}
+        VUE_APP_AUTHDOMAIN: ${{ secrets.VUE_APP_AUTHDOMAIN }}
+        VUE_APP_DATABASEURL: ${{ secrets.VUE_APP_DATABASEURL }}
+        VUE_APP_MEASUREMENTID: ${{ secrets.VUE_APP_MEASUREMENTID }}
+        VUE_APP_MESSAGINGSENDERID: ${{ secrets.VUE_APP_MESSAGINGSENDERID }}
+        VUE_APP_PROJECTID: ${{ secrets.VUE_APP_PROJECTID }}
+        VUE_APP_STORAGEBUCKET: ${{ secrets.VUE_APP_STORAGEBUCKET }}
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
