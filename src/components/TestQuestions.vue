@@ -1,32 +1,24 @@
-
 <template>
     <div class="container-app">
 
         <div class="container-quiz">
           <div class="header-quiz">
-            <h1>Quiz Time</h1>
+            <h1>Theo Quiz Time</h1>
             <img src="@/assets/biber-fmi.svg" width="80" height="70"/>
           </div>
           <div class="step-progress" :style="{'width':progress + '%'}"></div>
-          <div class="box" v-for="(question,index) in questions.slice(a,b)" :key="index" v-show="quiz" >
+          <div class="box" v-for="(question,index) in questions.slice(a,b)" :key="index" v-show="quiz">
               
               <div class="box-question">
-                <img
-                    max-height="50"
-                    max-width="100"
-                    :src="question.imageURL"
-                />
                 <h2>Question {{b}}/{{questions.length}}</h2>
                 <p>{{question.question}}</p>
-
               </div>
               <div class="box-propositions">
                 <ul>
                   
-                  <li v-for="(proposition,index) in getValuesQuestions(question.props) " :key="index" class="li" @click="selectResponse(proposition,index, question.props)" :class=" correct ? check(proposition, question.props) : ''">
-
-                    <h2  @pointerdown="selectResponse(proposition,index, questions.props)" :class=" correct ? check(proposition) : ''">{{proposition}}</h2>
-
+                  <li v-for="(proposition,index) in question.propositions" :key="index" class="li" @click="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">
+                    <math-field id="testing"  style="font-size: 13px;" read-only=false v-bind:value="proposition.props"  @pointerdown="selectResponse(proposition,index)" :class=" correct ? check(proposition) : ''">     
+                      </math-field>
                     <div class="fas fa-check" v-if="correct ?  proposition.correct: ''"></div>
                     <div class="fas fa-times" v-if="correct ?  !proposition.correct: ''"></div>
                     </li>
@@ -66,13 +58,11 @@
 /* eslint-disable */
 import db from '@/firebase'
 import {MathLive} from "mathlive";
-
+import {MathField} from "mathlive";
 export default {
   data(){
     return{
       questions:[],
-      storeVariable: "",
-      storeArray: [],
       a:0,
       b:1,
       next:true,
@@ -89,7 +79,6 @@ export default {
   },
   mounted()  {
      this.initializeDatabaseData()
-
   },
   methods:{
     shuffleArray (arr) {
@@ -120,54 +109,19 @@ export default {
       this.shuffleArray(self);
       this.questions = self;
     },
-    selectResponse(e, index, correctAnswer){
+    selectResponse(e){
       this.correct = true;
       this.next = false;
-      if (e == correctAnswer) {
+      if (e.correct) {
         this.score = this.nextCount + 1;
       }
     },
-    check(status, correctAnswer){
-        if (status == correctAnswer) {
+    check(status){
+        if (status.correct) {
           return 'correct'
         }else{
           return 'incorrect' 
         }
-    },
-    getValuesQuestions(questionsArray) {
-      if(this.storeVariable == questionsArray){
-        return this.storeArray
-      }
-      var newArrayQuestions = []
-      this.questions.forEach(function (value, i) {
-        if (questionsArray !== value.props){
-          newArrayQuestions.push(value.props)
-        }
-
-      });
-      const shuffled = this.getRandom(newArrayQuestions, 3)
-      newArrayQuestions = shuffled
-      newArrayQuestions.push(questionsArray)
-      this.shuffleArray(newArrayQuestions)
-      this.storeArray = []
-      this.storeArray = newArrayQuestions
-      this.storeVariable = ""
-      this.storeVariable = questionsArray
-      return newArrayQuestions
-
-    },
-    getRandom(arr, n) {
-      var result = new Array(n),
-          len = arr.length,
-          taken = new Array(len);
-      if (n > len)
-        throw new RangeError("getRandom: more elements taken than available");
-      while (n--) {
-        var x = Math.floor(Math.random() * len);
-        result[n] = arr[x in taken ? taken[x] : x];
-        taken[x] = --len in taken ? taken[len] : len;
-      }
-      return result;
     },
     nextQuestion(){
       this.nextCount = this.score;
@@ -219,14 +173,12 @@ export default {
 .math-field {
  --hue: 10      
 }
-
 .container-app {
     display: flex;
     width: 100%;
     height: 100%;
     justify-content: center;
 }
-
 .container-quiz {
     display: flex;
     width: 40%;
@@ -242,7 +194,6 @@ export default {
     margin: auto;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
-
 .header-quiz {
     display: flex;
     width: 100%;
@@ -253,30 +204,25 @@ export default {
     background-color: #e7eae0;
     border-radius: 10px 10px 0px 0px;
 }
-
 .container-quiz .box {
-    display: table;
+    display: flex;
     width: 100%;
     height: 70%;
     flex-flow: column;
     margin: auto;
 }
-
 .box-question {
     margin-top: 20px;
 }
-
 .box-question p {
     margin-top: 20px;
 }
-
 .box-propositions {
     margin: auto;
-    display: table;
+    display: flex;
     width: 100%;
     justify-content: center;
 }
-
 ul {
     display: flex;
     width: 90%;
@@ -284,37 +230,31 @@ ul {
     padding: 0;
     flex-flow: column;
 }
-
 li {
     list-style: none;
-    line-height: 1;
+    line-height: 4;
     border: 1px solid #cdd2d2;
     margin-bottom: 20px;
     border-radius: 15px;
     cursor: pointer;
     transition: 0.3s;
 }
-
 li:hover {
     /*transform: scale(1.1);*/
     background-color: #e7eae0;
 }
-
 li>div {
     float: right;
     margin-top: 7px;
     margin-right: 7px;
     color: white;
 }
-
 .check {
     color: rgb(74, 219, 74);
 }
-
 .close {
     color: rgb(240, 117, 100);
 }
-
 .footer-quiz {
     display: flex;
     width: 100%;
@@ -324,12 +264,10 @@ li>div {
     background-color: #e7eae0;
     border-radius: 0px 0px 10px 10px;
 }
-
 .box-button {
     display: flex;
     width: 100%;
 }
-
 .footer-quiz .box-button button {
     width: 150px;
     height: 35px;
@@ -344,37 +282,31 @@ li>div {
     letter-spacing: 2px;
     background-color: #a09f9ff5;
 }
-
 li.correct {
     border: 1px solid rgb(74, 219, 74);
     background-color: rgb(74, 219, 74);
     color: white;
     font-weight: 600;
 }
-
 li.incorrect {
     border: 1px solid rgb(240, 117, 100);
     background-color: rgb(240, 117, 100);
     color: white;
     font-weight: 600;
 }
-
 .box-score {
     display: flex;
     width: 100%;
     height: 70%;
     flex-flow: column;
 }
-
 .box-score h2 {
     margin-top: 40px;
 }
-
 i {
     display: none;
     color: white;
 }
-
 .step-progress {
     display: flex;
     width: 100%;
@@ -382,7 +314,6 @@ i {
     background-color: rgb(106, 128, 202);
     transition: 0.5s;
 }
-
 .btn-restart {
     display: flex;
     width: 100%;
@@ -390,7 +321,6 @@ i {
     justify-content: center;
     margin-top: 50px;
 }
-
 .btn-restart button {
     width: 150px;
     height: 35px;
@@ -405,9 +335,7 @@ i {
     margin-bottom: 10px;
     letter-spacing: 2px;
 }
-
 .next {
     background-color: rgb(106, 128, 202);
 }
-
 </style>
