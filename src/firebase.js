@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import 'firebase/database'
 
 // Your web app's Firebase configuration
+console.log(process.env)
 const firebaseConfig = {
   apiKey: process.env.APIKEY,
   authDomain: process.env.AUTHDOMAIN,
