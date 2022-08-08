@@ -16,14 +16,14 @@ jobs:
         npm install
         npm run-script build
       env:
-        APIKEY: ${{ secrets.APIKEY }}
-        APPID: ${{ secrets.APPID }}
-        AUTHDOMAIN: ${{ secrets.AUTHDOMAIN }}
-        DATABASEURL: ${{ secrets.DATABASEURL }}
-        MEASUREMENTID: ${{ secrets.MEASUREMENTID }}
-        MESSAGINGSENDERID: ${{ secrets.MESSAGINGSENDERID }}
-        PROJECTID: ${{ secrets.PROJECTID }}
-        STORAGEBUCKET: ${{ secrets.STORAGEBUCKET }}
+        APIKEY: ${{ secrets.VUE_APP_APIKEY }}
+        APPID: ${{ secrets.VUE_APP_APPID }}
+        AUTHDOMAIN: ${{ secrets.VUE_APP_AUTHDOMAIN }}
+        DATABASEURL: ${{ secrets.VUE_APP_DATABASEURL }}
+        MEASUREMENTID: ${{ secrets.VUE_APP_MEASUREMENTID }}
+        MESSAGINGSENDERID: ${{ secrets.VUE_APP_MESSAGINGSENDERID }}
+        PROJECTID: ${{ secrets.VUE_APP_PROJECTID }}
+        STORAGEBUCKET: ${{ secrets.VUE_APP_STORAGEBUCKET }}
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
