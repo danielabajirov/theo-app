@@ -5,7 +5,7 @@ import 'firebase/database'
 // Your web app's Firebase configuration
 console.log("Test", process.env)
 console.log("Test", process.env.APIKEY)
-console.log("Test", process.env.DATABASEURL)
+console.log("Test", process.env.THEO_APP_APIKEY)
 const firebaseConfig = {
   apiKey: process.env.APIKEY,
   authDomain: process.env.AUTHDOMAIN,

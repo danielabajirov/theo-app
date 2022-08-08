@@ -13,9 +13,9 @@ jobs:
     - name: Build
       run: |
         npm install
-        npm run-script build
+        npm run build
       env:
-        APIKEY: ${{ secrets.VUE_APP_APIKEY }}
+        VUE_APP_APIKEY: ${{ secrets.VUE_APP_APIKEY }}
         APPID: ${{ secrets.VUE_APP_APPID }}
         AUTHDOMAIN: ${{ secrets.VUE_APP_AUTHDOMAIN }}
         DATABASEURL: ${{ secrets.VUE_APP_DATABASEURL }}
@@ -23,7 +23,7 @@ jobs:
         MESSAGINGSENDERID: ${{ secrets.VUE_APP_MESSAGINGSENDERID }}
         PROJECTID: ${{ secrets.VUE_APP_PROJECTID }}
         STORAGEBUCKET: ${{ secrets.VUE_APP_STORAGEBUCKET }}
-        TEST: ${{ secrets.THEO_APP_APIKEY }}
+        THEO_APP_APIKEY: ${{ secrets.THEO_APP_APIKEY }}
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
